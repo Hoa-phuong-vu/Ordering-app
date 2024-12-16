@@ -2,6 +2,7 @@ import menuArray from "./data.js";
 const order = document.getElementById('order')
 const menuContainer = document.getElementById('menu-item');
 
+//render menu items onto screen
 function menuItems(menuItems){
     return menuItems.map(item => {
         const {name,
@@ -28,6 +29,8 @@ function menuItems(menuItems){
     
 }
 
+
+//adding item to order
 function addOrder(){
    menuContainer.addEventListener('click', function(e) { 
     if(e.target.classList.contains("add")){
@@ -46,16 +49,17 @@ function addOrder(){
    )
 }
 
+
+//removing item from order
 function removeOrder(){
     order.addEventListener('click', function(e){
         if(e.target.classList.contains("remove")){
-            const removeItem = menuArray[e.target.dataset.remove]
-            removeItem.id.style.visibility = hidden
+            const itemToRemove = e.target.closest('.order-info');
+            itemToRemove.remove();
         }
     })
 }
 
 document.getElementById('menu-item').innerHTML = menuItems(menuArray)
-
 addOrder()
 removeOrder()
