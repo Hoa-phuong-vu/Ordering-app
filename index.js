@@ -1,4 +1,6 @@
 import menuArray from "./data.js";
+const order = document.getElementById('order')
+const menuContainer = document.getElementById('menu-item');
 
 function menuItems(menuItems){
     return menuItems.map(item => {
@@ -7,7 +9,7 @@ function menuItems(menuItems){
             id,
             price,
             emoji} = item
-        const list = ingredients.reduce((total, current)=> total +", " + current)
+        const list = ingredients.reduce((total, current)=> total + ", " + current)
         return `
         <div class="menu-item" >
          <div class="info">
@@ -18,11 +20,42 @@ function menuItems(menuItems){
                 <p>$ ${price}</p>
             </div>
         </div>
-            <img src="./images/add.jpg" class="add" id="add"/>
+            <input type="button" class="add" id="add" data-id="${id}"/>
         </div>
         <hr>
         `
     }).join('')
     
 }
+
+function addOrder(){
+   menuContainer.addEventListener('click', function(e) { 
+    if(e.target.classList.contains("add")){
+        const item = menuArray[e.target.dataset.id]
+       order.innerHTML += `
+       <div class="order-info">
+                <div class="items-info">
+                    <h2>${item.name}</h2>
+                    <input type="button" class="remove" id="remove" data-remove="${item.id}" value='Remove'/>
+                </div>
+                <p>$ ${item.price}</p>
+            </div>
+       `
+    }
+   }
+   )
+}
+
+function removeOrder(){
+    order.addEventListener('click', function(e){
+        if(e.target.classList.contains("remove")){
+            const removeItem = menuArray[e.target.dataset.remove]
+            removeItem.id.style.visibility = hidden
+        }
+    })
+}
+
 document.getElementById('menu-item').innerHTML = menuItems(menuArray)
+
+addOrder()
+removeOrder()
