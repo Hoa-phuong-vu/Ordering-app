@@ -1,6 +1,7 @@
 import menuArray from "./data.js";
 const order = document.getElementById('order')
 const menuContainer = document.getElementById('menu-item');
+const totalPrice = document.getElementById("total-price");
 
 //render menu items onto screen
 function menuItems(menuItems){
@@ -28,13 +29,19 @@ function menuItems(menuItems){
     }).join('')
     
 }
+//calculate total price
+let total = 0
 
+function totals(price){
+    totalPrice.textContent = '$' + price
+}
 
 //adding item to order
 function addOrder(){
    menuContainer.addEventListener('click', function(e) { 
     if(e.target.classList.contains("add")){
         const item = menuArray[e.target.dataset.id]
+       total += Number(item.price)
        order.innerHTML += `
        <div class="order-info">
                 <div class="items-info">
@@ -45,6 +52,7 @@ function addOrder(){
             </div>
        `
     }
+    totals(total)
    }
    )
 }
@@ -55,10 +63,16 @@ function removeOrder(){
     order.addEventListener('click', function(e){
         if(e.target.classList.contains("remove")){
             const itemToRemove = e.target.closest('.order-info');
+            const price = itemToRemove.querySelector('p').innerText.replace('$', '')
             itemToRemove.remove();
+            total -= Number(price)
+           
         }
+        totals(total)
     })
 }
+
+
 
 document.getElementById('menu-item').innerHTML = menuItems(menuArray)
 addOrder()
